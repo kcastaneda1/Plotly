@@ -9,8 +9,7 @@ from dash.dependencies import Input, Output
 import numpy as np
 import pandas as pd
 import datetime
-import plotly.graph_objs as go
-import plotly
+import plotly.express as px
 from plotly.subplots import make_subplots
 
 
@@ -27,7 +26,7 @@ df2 = df.copy()
 
 # create dashboard
 
-app = dash.Dash(__name__)
+app = Dash(__name__)
 server = app.server
 
 
@@ -52,7 +51,7 @@ def update_Ohlcgraph(selected_dropdown_value):
     dff['MA20'] = dff['price.adjusted'].rolling(20).mean()
     dff['MA50'] = dff['price.adjusted'].rolling(50).mean()  
 
-    OHLC = go.Candlestick(
+    OHLC = px.Candlestick(
         x = dff['ref.date'],
         open = dff['price.open'],
         high = dff['price.high'],
@@ -60,21 +59,21 @@ def update_Ohlcgraph(selected_dropdown_value):
         close = dff['price.adjusted'],
         name = 'Candle Chart')
     
-    MA20 = go.Scatter(
+    MA20 = px.Scatter(
         x = dff['ref.date'],
         y = dff['MA20'],
         mode = 'lines',
         name = 'MA10',
         line=dict(color='purple', width=1))
     
-    MA50 = go.Scatter(
+    MA50 = px.Scatter(
         x = dff['ref.date'],
         y = dff['MA50'],
         mode = 'lines',
         name = 'EMA50',
         line=dict(color='orange', width=1))
 
-    Volume = go.Bar(
+    Volume = px.Bar(
         x = dff['ref.date'],
         y = dff['volume'],
         name = 'Volume')
